@@ -72,6 +72,7 @@ int main(){
     for (int i = 0; i < centerNum; i++)
       centerSet[i] = 0;
     for (int i = 0; i < storeNum; i++){
+      setTable[i] = new int[centerNum];
       for (int j = 0; j < centerNum; j++)
 	setTable[i][j] = 0;
     }
