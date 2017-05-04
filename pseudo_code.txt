@@ -1,0 +1,62 @@
+int profitPerGood = p(i) - c*d(i,j);
+int 運送量 = 剩餘容量 < 剩餘需求量? 剩餘容量:剩餘需求量;
+
+function A
+//find the most value j and associated i, and then set them
+for all unset j{
+	for all i which is unset && array[i][j][0] == 1;
+	sum up profit;
+	minus all fixed cost;
+}
+//set the most valuable j and associated i
+建立 bestJ 與其對應所有零售商 i;
+int maxNetProfit = for all i sum(profitPerGood(i,bestJ)) - fixed cost of bestJ and all i;
+
+function b
+//set store if increase net profit
+for all residual store unset{
+	if (array[i][j][0] == 1 && center j is set){
+		sum up profit;
+		minus fixed cost of store;
+}
+
+function c
+//allocate transAm if not satisfied
+for (all set store & center){
+	if still has transAm
+		sum up profit;
+}
+
+main function:
+
+create dynamic bool arrays of whether a store is set & whether a center is set
+create a 3-dimensional int array with store cross center as a table, if profitPerGood(i,j) > 0, then array[i][j][0] = 1 & record the value, 	else array[i][j][0] = 0;
+
+do A once, and then compare A, B, C
+if A is the most valuable
+//set the most valuable j and associated i
+else if
+//set the most valuable set of store unset
+else
+//allocate transAm
+
+return 0 when none of A, B or C increase net profit
+
+變數名稱：
+運送量 transAm
+物流中心 center
+最佳物流中心 bestCenter
+零售商 store
+最佳零售商 bestStore
+價格 price
+需求量 demand
+距離 dist
+單位商品淨利 profitPerGood 
+零售商固定成本攤銷 fixedStore
+物流中心固定成本攤銷 fixedCenter
+物流中心容量 capacity
+再加上淨利 additProfit
+零售商可能淨利 possStore
+物流中心可能淨利（包含附加零售商） possCent
+淨利 netProfit
+最大可能淨利 maxNetProfit
