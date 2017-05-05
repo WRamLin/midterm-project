@@ -11,16 +11,16 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, bool *storeSet, bool *centerSet,
 			int profitC = functionC(transInfo)  //call functionC
 			int profit = max(profitB,profitC)
 			if profit > decide[0]
-				decide[0] = max(profitB,profitC)
+				decide[0] = max(profitB,profitC) - centerInfo[j][3]  //minus fixed cost of centerJ
 				decide[1] = centerJ
 				if profit == profitB
 					//decided by functionB
-					decide[2] = numOfNewStore() - centerInfo[j][3]  //minus fixed cost of centerJ
+					decide[2] = numOfNewStore()
 					decide[3] = 1  //build
 					decide[4] = transOfNewStore
 				else
 					//decided by functionC
-					decide[2] = transInfo[1] - centerInfo[j][3]  //minus fixed cost of centerJ
+					decide[2] = transInfo[1]
 					decide[3] = 0  //trans
 					decide[4] = transInfo[0]
 			centerSet = 0  //delete assumption
