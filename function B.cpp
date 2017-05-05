@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cmath>
 using namespace std;
 
 void newStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
@@ -16,7 +15,7 @@ void newStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, in
 		if(tempStoreSet[i]==false){
 			if(profitTable[i][j]!=0 && centerSet[j]==true){
 				if(storeInfo[i][2]<=centerInfo[i][2]){
-					netProfitB+=(storeInfo[i][4]-(cost*abs(storeInfo[i][0]-centerInfo[j][0])+abs(storeInfo[i][1]-centerInfo[j][1])));
+					netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
 					netProfitB-=storeInfo[i][3];
 					if(netProfitB>maxProfitB){
 						maxProfitB=netProfitB;
