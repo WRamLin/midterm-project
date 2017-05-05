@@ -36,3 +36,8 @@ int numOfNewStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet
 	newStore(storeNum, cost, *storeSet, *centerSet, **profitTable, **storeInfo, **centerInfo);
 	return storeOfMaxB;
 }
+
+int numOfNewStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
+	newStore(storeNum, cost, *storeSet, *centerSet, **profitTable, **storeInfo, **centerInfo);
+	return storeInfo[storeOfMaxB][2];
+}
