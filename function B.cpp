@@ -2,7 +2,7 @@
 #include <cmath>
 using namespace std;
 
-void newStore(int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
+void newStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
 
 	bool* tempStoreSet= new bool[storeNum];
 	for(int i=0; i<storeNum; i++){
@@ -28,12 +28,12 @@ void newStore(int storeNum, int cost, bool* storeSet, bool* centerSet, int** pro
 	}
 }
 
-int netProfitOfNewStore(int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
+int netProfitOfNewStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
 	newStore(storeNum, cost, *storeSet, *centerSet, **profitTable, **storeInfo, **centerInfo);
 	return maxProfitB;
 }
 
-int numOfNewStore(int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
+int numOfNewStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
 	newStore(storeNum, cost, *storeSet, *centerSet, **profitTable, **storeInfo, **centerInfo);
 	return storeOfMaxB;
 }
