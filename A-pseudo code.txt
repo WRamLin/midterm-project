@@ -1,0 +1,29 @@
+int *coffeeTeaOrMe(int *centerSet, ){ 
+
+	//create a array 'decide' for 5 elements : maxNetProfit , center , store , build(1)/trans(0) , transAm
+	int decide[5] = {0};
+	
+	for all centerJ
+		if centerSet[j] == 0  //centerJ is unset
+			centerSet = 1  //assume j is set
+			int profitB = netProfitOfNewStore()  //call functionB
+			int profitC = functionC  //call functionC
+			int profit = max(profitB,profitC)
+			if profit > decide[0]
+				decide[0] = max(profitB,profitC)
+				decide[1] = centerJ
+				if profit == profitB
+					//decided by functionB
+					decide[2] = numOfNewStore() - centerInfo[j][3]  //minus 
+					decide[3] = 1  //build
+					decide[4] = transOfNewStore
+				else
+					//decided by functionC
+					decide[2] = transInfo[1] - centerInfo[j][3]
+					decide[3] = 0  //trans
+					decide[4] = transInfo[0]
+			centerSet = 0  //delete assumption
+
+	return decide;
+
+}
