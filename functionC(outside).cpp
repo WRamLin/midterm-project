@@ -3,7 +3,7 @@ using namespace std;
 
 int transInfo[3] = {0};
 
-int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int **transInfo){
+int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfo[3]){
 	int *storeDem = new int[storeNum];
 	for(int i = 0; i < storeNum; i++){
 		storeDem[i] = storeInfo[i][2];
