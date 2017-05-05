@@ -6,9 +6,7 @@ void newStore(int storeNum, int cost, bool* storeSet, bool* centerSet, int** pro
 
 	bool* tempStoreSet= new bool[storeNum];
 	for(int i=0; i<storeNum; i++){
-		for(int j=0; j<storeNum; j++){
-			tempStoreSet[j]=storeSet[i];
-		}
+		tempStoreSet[i]=storeSet[i];
 	}
 
 	int netProfitB=0;
