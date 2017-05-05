@@ -4,7 +4,7 @@ using namespace std;
 
 void newStore(int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
 
-	int* tempStoreSet= new int[storeNum];
+	bool* tempStoreSet= new bool[storeNum];
 	for(int i=0; i<storeNum; i++){
 		for(int j=0; j<storeNum; j++){
 			tempStoreSet[j]=storeSet[i];
