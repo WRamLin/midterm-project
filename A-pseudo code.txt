@@ -1,4 +1,4 @@
-int *coffeeTeaOrMe(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo ){ 
+int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo ){ 
 
 	//create a array 'decide' for 5 elements : maxNetProfit , center , store , build(1)/trans(0) , transAm
 	int decide[5] = {0};
