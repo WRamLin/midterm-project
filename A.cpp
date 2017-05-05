@@ -1,55 +1,18 @@
 #include <iostream>
 using namespace std;
 
-int findBestI( int **profit, int center, int storeNum, int **demand )
-{
-	int max = 0;
-	for( int i = 0; i < storeNum; i++)
-	{
-		if( profit[i][center] > profit[max][center] && demand[i][2] > 0 )
-		{
-			max = i;
-		}
-	}
-	if(profit[max][center] == 0)
-		return -1;
-		
-	profit[max][center] = 0;
-	return max;
-}
-void setTable2( int **profitTable ,int **profitTable2, int centerNum, int storeNum, int **transAm )
-{
-	//consider transAm
-	for( int i = 0; i < storeNum; i++ )
-	{
-		for( int j = 0; j < centerNum; j++ )
-		{
-			profitTable2[i][j] = profitTable[i][j] * transAm[i][j]; 
-		}
-	}
-}
+int setTransAm(int cap, int dem);
+void setTable(int **profitTable, int storeNum, int residualCap, int **storeInfo, bool *storeSet);
+int findBestI( int **profit, int center, int storeNum );
+int *findRelatStore(int *bestJ, int **profitTable, int storeNum);
+int* findBestJ( int  **centerInfo, int **storeInfo, int **profitTable, int centerNum, int storeNum, bool *storeSet, bool *centerSet);
+
 
 int* findBestJ( int  **centerInfo, int **storeInfo, int **profitTable, int centerNum, int storeNum, bool *storeSet, bool *centerSet)
 {
 	int relatStoreNum = 0;
 	int maxProfit = 0;
 	int bestCen = 0;
-	
-	//first for netProfit,second for bestJ's index,third for relatStoreNum,others for relative I's index 
-	int** profitTable2 = new int*[storeNum];
-	int **transAm = new int *[storeNum];
-	
-	//initialization
-	for( int i = 0; i < storeNum; i++ )
-	{
-		transAm[i] = new int[centerNum];
-		profitTable2[i] = new int[centerNum];
-		for(int j = 0; j < centerNum; j++)
-		{
-			transAm[i][j] = centerInfo[j][2] < storeInfo[i][2]?centerInfo[j][2]:storeInfo[i][2];
-		}
-	}
-	setTable2( profitTable, profitTable2, centerNum, storeNum, transAm);
 	
 	for( int j = 0; j < centerNum; j++ )
 	{
@@ -58,18 +21,22 @@ int* findBestJ( int  **centerInfo, int **storeInfo, int **profitTable, int cente
 			int profit = 0;
 			int residualCap = centerInfo[j][2];
 			
+			
+			setTable(profitTable, storeNum, centerNum, residualCap, storeInfo, storeSet);
+			int bestI = findBestI( profitTable, j, storeNum );
 			int a = 0;
-			int bestI = findBestI( profitTable2, j, storeNum, storeInfo );
 			while( residualCap && bestI != -1) //center still have capacity
 			{
-				residualCap -= transAm[bestI][j];
-				profit += profitTable[bestI][j] * transAm[bestI][j];
+				int transAm = setTransAm(residualCap, storeInfo[bestI][2]);
+				residualCap -= transAm;
+				profit += profitTable[bestI][j] * transAm;
 				profit -= storeInfo[bestI][3];
 			
-				bestI = findBestI( profitTable2, j, storeNum, storeInfo );
+				setTable(profitTable, storeNum, centerNum, residualCap, storeInfo, storeSet);
+				bestI = findBestI( profitTable, j, storeNum );
 				a++;	
 			}
-
+			profit -= centerInfo[j][3];
 			if( profit > maxProfit )
 			{
 				maxProfit = profit;
@@ -79,20 +46,66 @@ int* findBestJ( int  **centerInfo, int **storeInfo, int **profitTable, int cente
 		}	
 	}
 	int *bestJ = new int[relatStoreNum +2];
-	
-	bestJ[0] = maxProfit - centerInfo[bestCen][3];
+	//first for netProfit,second for bestJ's index,third for relatStoreNum,others for relative I's index
+	bestJ[0] = maxProfit;
 	bestJ[1] = bestCen;
 	bestJ[2] = relatStoreNum;
-	
-	//reset setTale2
-	setTable2( profitTable, profitTable2, centerNum, storeNum, transAm);
-	
-	for( int a = 0; a < relatStoreNum; a++ )
-	{
-		bestJ[a + 3] = findBestI( profitTable2, bestJ[1], storeNum, storeInfo );
-	}
-
-	return bestJ;
+	for( int a = 0; a < relatStoreNum; a++)
+		bestJ[a+3] = 0;
+	return bestJ;	
 }
 
+int *findRelatStore(int *bestJ, int **profitTable, int storeNum)
+{
+	for( int a = 0; a < bestJ[2]; a++ )
+	{
+		bestJ[a + 3] = findBestI( profitTable, bestJ[1], storeNum );
+	}
+	
+	return bestJ;
+}
+	
 
+
+int setTransAm(int cap, int dem)
+{
+	int transAm = (cap > dem? dem:cap);
+	
+	return transAm;
+}
+
+void setTable(int **profitTable, int storeNum, int centerNum, int residualCap, int **storeInfo, bool *storeSet)
+{
+	//consider transAm & fixed cost of store
+	int *transAm = new int[storeNum];
+	for( int i = 0; i < storeNum; i++ )
+	{
+		transAm[i] = setTransAm(residualCap, storeInfo[i][2]);
+	}
+	for( int j = 0; j < centerNum; j++)
+		for( int i = 0; i < storeNum; i++)
+		{
+			profitTable[i][j] = profitTable[i][j] * transAm[i];
+			if( storeSet[i] == false )
+			{
+				profitTable[i][j] -= storeInfo[i][3];
+			}		
+		}
+}
+
+int findBestI( int **profit, int center, int storeNum )
+{
+	int max = 0;
+	for( int i = 0; i < storeNum; i++)
+	{
+		if( profit[i][center] > profit[max][center] )
+		{
+			max = i;
+		}
+	}
+	if(profit[max][center] == 0)
+		return -1;
+		
+	profit[max][center] = 0;
+		return max;
+}
