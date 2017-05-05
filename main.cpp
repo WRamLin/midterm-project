@@ -78,14 +78,14 @@ int main(){
     }
 
     /*calculate function start
-      functionA: check the most valuable netProfit center & associated stores
-      return netProftit & the numOfCenter & the NumOfStores & list of stores
+      functionA: check a most valuable netProfit center & an associated stores
+      return netProftit & the indexOfCenter & the indexOfStores & type & transAm
       
-      functionB: check the most valuable unset store set
-      return netProfit & the NumOfStores & list of stores
+      functionB: check a most valuable unset store set
+      return netProfit & indexOfCenter & the indexOfStores & transAm
 
-      functionC: check the most valuable transition plan
-      return netProfit & the NumOfStores been allocated transAm & the orderOfStore followed the transAm
+      functionC: check a most valuable transition
+      return netProfit & indexOfCenter & the indexOfStores & transAm
     */
 
     //do functionA once
