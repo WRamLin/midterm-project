@@ -2,43 +2,35 @@ int profitPerGood = p(i) - c*d(i,j);
 int 運送量 = 剩餘容量 < 剩餘需求量? 剩餘容量:剩餘需求量;
 
 function A
-//find the most value j and associated i, and then set them
+//find a most value j and an associated i, and then set them
 for all unset j{
-	for all i which is unset && array[i][j][0] == 1;
-	sum up profit;
-	minus all fixed cost;
+	check if centerJ is set, whether functionB or functionC has the bigger profit;
 }
-//set the most valuable j and associated i
-建立 bestJ 與其對應所有零售商 i;
-int maxNetProfit = for all i sum(profitPerGood(i,bestJ)) - fixed cost of bestJ and all i;
+netProfitA = the bigger profit - fixed cost of centerJ;
 
 function b
-//set store if increase net profit
+//set a store if increase net profit
 for all residual store unset{
 	if (array[i][j][0] == 1 && center j is set){
 		sum up profit;
-		minus fixed cost of store;
 }
+netProfitB = profit - fixed cost of storeI;
 
 function c
-//allocate transAm if not satisfied
+//allocate a center to store transAm if not satisfied
 for (all set store & center){
 	if still has transAm
 		sum up profit;
 }
+netProfitC = profit;
 
 main function:
 
 create dynamic bool arrays of whether a store is set & whether a center is set
-create a 3-dimensional int array with store cross center as a table, if profitPerGood(i,j) > 0, then array[i][j][0] = 1 & record the value, 	else array[i][j][0] = 0;
+create a 2-dimensional int array with store cross center as a table, if profitPerGood(i,j) > 0, array[i][j] = profitPerGood(i,j), else array[i][j] = 0;
 
-do A once, and then compare A, B, C
-if A is the most valuable
-//set the most valuable j and associated i
-else if
-//set the most valuable set of store unset
-else
-//allocate transAm
+compare between netProfitA, netProfitB, netProfitC;
+set the store or center, or allocate transAm if needed;
 
 return 0 when none of A, B or C increase net profit
 
