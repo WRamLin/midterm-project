@@ -1,10 +1,10 @@
 #include<iostream>
 using namespace std;
 
-int **transInfo = new int*[3];
-for(int i = 0; i < 2; i++){
-	transInfo[i] = new int[storeNum];
-	for(int j = 0; j < 2; j++){
+int **transInfo = new int*[storeNum];
+for(int i = 0; i < storeNum; i++){
+	transInfo[i] = new int[3];
+	for(int j = 0; j < 3; j++){
 		if(i == 0 && j == 0)
 		transInfo[i][j] = -1;
 		transInfo[i][j] = 0;
@@ -21,7 +21,7 @@ int transAm(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **
 	return transProfit;
 }
 
-int deliver(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfo[2]){
+int deliver(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int **transInfo, int time){
 	int transStore = -1, transCenter = -1, profit = 0, category = 0;
 	for(int i = 0; i < storeNum; i++){
 		for(int j = 0; j < centerNum; j++){
