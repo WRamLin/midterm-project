@@ -15,12 +15,12 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, bool *storeSet, bool *centerSet,
 				decide[1] = centerJ
 				if profit == profitB
 					//decided by functionB
-					decide[2] = numOfNewStore() - centerInfo[j][3]  //minus 
+					decide[2] = numOfNewStore() - centerInfo[j][3]  //minus fixed cost of centerJ
 					decide[3] = 1  //build
 					decide[4] = transOfNewStore
 				else
 					//decided by functionC
-					decide[2] = transInfo[1] - centerInfo[j][3]
+					decide[2] = transInfo[1] - centerInfo[j][3]  //minus fixed cost of centerJ
 					decide[3] = 0  //trans
 					decide[4] = transInfo[0]
 			centerSet = 0  //delete assumption
