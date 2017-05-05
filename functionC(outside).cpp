@@ -32,14 +32,10 @@ int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet
 					transCenter = j;
 					category = type;
 					if(category){
-						centerCapa[transCenter] -= storeDem[transStore];
 						transAm = storeDem[transStore];
-						storeDem[transStore] = 0;
 					}
 					else{
-						storeDem[transStore] -= centerCapa[transCenter];
 						transAm = centerCapa[transCenter];
-						centerCapa[transCenter] = 0;
 					}
 				}
 			}
