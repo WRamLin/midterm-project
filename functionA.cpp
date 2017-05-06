@@ -20,7 +20,7 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *
 			for( int i = 0; i < 2; i++ ){
 				transInfo[i] = 0;
 			}
-			int profitC = nowYouSeeMe(storeNum,j,storeSet,profitTable,storeInfo,centerInfo[j][2],transInfo[2]);  //call functionC
+			int profitC = nowYouSeeMe(storeNum,j,storeSet,profitTable,storeInfo,centerInfo[j][2],transInfo);  //call functionC
 			profitC -= centerInfo[j][3];
 			int profit = 0;
 			if( profitB == profitC )
