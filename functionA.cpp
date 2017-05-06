@@ -13,23 +13,16 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *
 		if( centerSet[j] == false ){
 			centerSet[j] = true;  //assume it is set
 			
-			int *ansB = new int[3];  //prepare for functionB
-			ansB = newStore( j, storeNum, storeSet, centerSet, profitTable, storeInfo, centerInfo);  //call functionB
-			int profitB = ansB[0]- centerInfo[j][3];
-			int *transInfo = new int[2];  //prepare for functionC
-			for( int i = 0; i < 2; i++ ){
-				transInfo[i] = 0;
-			}
+			int *ansB = newStore( j, storeNum, storeSet, centerSet, profitTable, storeInfo, centerInfo);  //call functionB
+			int profitB = ansB[0];
+			int transInfo[3] = {0};  //prepare for functionC
 			int profitC = nowYouSeeMe(storeNum,j,storeSet,profitTable,storeInfo,centerInfo[j][2],transInfo);  //call functionC
-			profitC -= centerInfo[j][3];
 			int profit = 0;
 			if( profitB == profitC )
-			{
 				profit = profitB;
-			}
 			else
 				profit = max( profitB, profitC );
-			
+			profit -= centerInfo[j][3];
 			if( profit > decide[0] ){
 				decide[0] = profit;  //maxNetProfit
 				decide[1] = j;  //center
