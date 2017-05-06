@@ -9,7 +9,7 @@ int* newStore(int j, int storeNum, bool* storeSet, bool* centerSet, int** profit
 	}
 	
 	int netProfitB=0;
-	int maxProfitB=-1;
+	int maxProfitB=-2147483648;
 	int storeOfMaxB=-1;
 	int category = -1;
 	for(int i=0; i<storeNum; i++){
