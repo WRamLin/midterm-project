@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-int* newStore(int j, int storeNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
+int* newStore(int j, int storeNum, bool* storeSet, int** profitTable, int** storeInfo, int** centerInfo){
 
 	int *ansB = new int[3];
 	for( int i = 0; i < 3; i++ ){
@@ -15,7 +15,7 @@ int* newStore(int j, int storeNum, bool* storeSet, bool* centerSet, int** profit
 	for(int i=0; i<storeNum; i++){
 		if(storeSet[i]==false){
 			int tempCate = 0;
-			if(profitTable[i][j]!=0 && centerSet[j]==true){
+			if(profitTable[i][j]!=0){
 				if(storeInfo[i][2]<=centerInfo[j][2]){
 					netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
 					netProfitB-=storeInfo[i][3];	
