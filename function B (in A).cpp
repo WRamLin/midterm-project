@@ -1,18 +1,14 @@
 #include <iostream>
 using namespace std;
 
-void newStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
+int* newStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
 
-	bool* tempStoreSet= new bool[storeNum];
-	for(int i=0; i<storeNum; i++){
-		tempStoreSet[i]=storeSet[i];
-	}
-
+	int ansB[3]={0};
 	int netProfitB=0;
 	int maxProfitB=-1;
 	int storeOfMaxB=-1;
 	for(int i=0; i<storeNum; i++){
-		if(tempStoreSet[i]==false){
+		if(storeSet[i]==false){
 			if(profitTable[i][j]!=0 && centerSet[j]==true){
 				if(storeInfo[i][2]<=centerInfo[i][2]){
 					netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
@@ -25,19 +21,12 @@ void newStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, in
 			}
 		}
 	}
+	ansB[0]=maxProfitB;
+	ansB[1]=storeOfMaxB;
+	ansB[2]=storeInfo[storeOfMaxB][2];
+	
+	return *ansB;
 }
 
-int netProfitOfNewStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
-	newStore(storeNum, cost, *storeSet, *centerSet, **profitTable, **storeInfo, **centerInfo);
-	return maxProfitB;
-}
 
-int numOfNewStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
-	newStore(storeNum, cost, *storeSet, *centerSet, **profitTable, **storeInfo, **centerInfo);
-	return storeOfMaxB;
-}
 
-int transOfNewStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
-	newStore(storeNum, cost, *storeSet, *centerSet, **profitTable, **storeInfo, **centerInfo);
-	return storeInfo[storeOfMaxB][2];
-}
