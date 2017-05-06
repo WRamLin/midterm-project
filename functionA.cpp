@@ -2,7 +2,7 @@
 #include <algorithm>
 using namespace std;
 
-functionA(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo){
+int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo){
 	int *decide = new int[5]; //maxNetProfit , center , store , build(1)/trans(0) , transAm
 	//initialize
 	for( int i = 0; i < 5; i++ ){
@@ -19,7 +19,7 @@ functionA(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet
 			for( int i = 0; i < 2; i++ ){
 				transInfo[i] = 0;
 			}
-			int profitC = functionC();  //call functionC
+			int profitC = nowYouSeeMe(storeNum,j,storeSet,profitTable,storeInfo,centerInfo[j][2],transInfo[2]);  //call functionC
 			if( profitB == profitC )
 			{
 				int profit = profitB;
