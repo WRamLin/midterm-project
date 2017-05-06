@@ -9,7 +9,7 @@ int* newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSe
 	}
 	
 	int netProfitB=0;
-	int maxProfitB=-1;
+	int maxProfitB=--2147483648;
 	int storeOfMaxB=-1;
 	int category = -1;
 	int centerOfB=-1;
