@@ -8,7 +8,7 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *
 			centerSet = 1  //assume j is set
 			int profitB = netProfitOfNewStore()  //call functionB
 			int transInfo[2] = {0}
-			int profitC = functionC(transInfo)  //call functionC
+			int profitC = nowYouSeeMe(storeNum,j,storeSet,profitTable,storeInfo,centerInfo[j][2],transInfo[2])  //call functionC
 			int profit = max(profitB,profitC)
 			if profit > decide[0]
 				decide[0] = max(profitB,profitC) - centerInfo[j][3]  //minus fixed cost of centerJ
