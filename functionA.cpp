@@ -22,12 +22,13 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *
 			}
 			int profitC = nowYouSeeMe(storeNum,j,storeSet,profitTable,storeInfo,centerInfo[j][2],transInfo[2]);  //call functionC
 			profitC -= centerInfo[j][3];
+			int profit = 0;
 			if( profitB == profitC )
 			{
-				int profit = profitB;
+				profit = profitB;
 			}
 			else
-				int profit = max( profitB, profitC );
+				profit = max( profitB, profitC );
 			
 			if( profit > decide[0] ){
 				decide[0] = profit;  //maxNetProfit
