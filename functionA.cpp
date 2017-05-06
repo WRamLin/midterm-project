@@ -30,7 +30,7 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *
 				int profit = max( profitB, profitC );
 			
 			if( profit > decide[0] ){
-				decide[0] = max(profitB,profitC) - centerInfo[j][3];  //maxNetProfit
+				decide[0] = profit - centerInfo[j][3];  //maxNetProfit
 				decide[1] = j;  //center
 				if( profit == profitB ){
 					//decided by functionB
