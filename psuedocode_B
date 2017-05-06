@@ -1,0 +1,8 @@
+input(j, storeNum, storeSet, centerSet, profitTable, storeInfo, centerInfo)
+  for all unset store i
+    if demand of i <= capacity of j
+      netProfitB= profitTable*demand of i - fixed cost of i
+    else
+       netProfitB= profitTable*capacity of j - fixed cost of i
+    find the maxProfitB and the store i of maxProfitB	
+ return maxProfitB & storeOfMaxB & the trans amount
