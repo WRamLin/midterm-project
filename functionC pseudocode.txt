@@ -1,0 +1,7 @@
+input(storeNum, centerNum, storeSet, centerSet, profitTable, centerInfo, storeInfo, transInfo[3])
+for(all set store & center)
+	if(profit > 0, and both have residual amount)
+		choose the smaller amount to transmit
+		profit = perGood * transAm
+
+record in transInfo;
