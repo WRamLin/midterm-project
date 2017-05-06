@@ -14,25 +14,25 @@ int* newStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, in
 	int category = -1;
 	for(int i=0; i<storeNum; i++){
 		for(int j=0; j<storeNum; j++){
-		if(storeSet[i]==false){
-			int tempCate = 0;
-			if(profitTable[i][j]!=0 && centerSet[j]==true){
-				if(storeInfo[i][2]<=centerInfo[i][2]){
-					netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
-					netProfitB-=storeInfo[i][3];	
-				}
-				else{
-					netProfitB+=(profitTable[i][j]*centerInfo[j][2]);
-					netProfitB-=storeInfo[i][3];
-					tempCate = 1;
-				}
-				if(netProfitB>maxProfitB){
-					maxProfitB=netProfitB;
-					storeOfMaxB=i;
-					category = tempCate;
+			if(storeSet[i]==false){
+				int tempCate = 0;
+				if(profitTable[i][j]!=0 && centerSet[j]==true){
+					if(storeInfo[i][2]<=centerInfo[i][2]){
+						netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
+						netProfitB-=storeInfo[i][3];	
+					}
+					else{
+						netProfitB+=(profitTable[i][j]*centerInfo[j][2]);
+						netProfitB-=storeInfo[i][3];
+						tempCate = 1;
+					}
+					if(netProfitB>maxProfitB){
+						maxProfitB=netProfitB;
+						storeOfMaxB=i;
+						category = tempCate;
+					}
 				}
 			}
-		}
 		}	
 	}
 	ansB[0]=maxProfitB;
