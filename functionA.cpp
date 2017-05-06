@@ -13,9 +13,8 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *
 		if( centerSet[j] == false ){
 			centerSet[j] = true;  //assume it is set
 			
-			newStore( j, storeNum, storeSet, centerSet, profitTable, storeInfo, centerInfo);  //call functionB
-			int *ansB = new int[3];
-			ansB = newStore( j, storeNum, cost, storeSet, centerSet, profitTable, storeInfo, centerInfo);
+			int *ansB = new int[3];  //prepare for functionB
+			ansB = newStore( j, storeNum, storeSet, centerSet, profitTable, storeInfo, centerInfo);  //call functionB
 			int profitB = ansB[0];
 			int *transInfo = new int[2];  //prepare for functionC
 			for( int i = 0; i < 2; i++ ){
