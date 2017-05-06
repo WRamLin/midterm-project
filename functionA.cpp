@@ -20,7 +20,12 @@ functionA(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet
 				transInfo[i] = 0;
 			}
 			int profitC = functionC();  //call functionC
-			int profit = max( profitB, profitC );
+			if( profitB == profitC )
+			{
+				int profit = profitB;
+			}
+			else
+				int profit = max( profitB, profitC );
 			
 			if( profit > decide[0] ){
 				decide[0] = max(profitB,profitC) - centerInfo[j][3];  //maxNetProfit
