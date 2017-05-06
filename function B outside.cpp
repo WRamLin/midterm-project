@@ -18,11 +18,16 @@ int* newStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, in
 					if(storeInfo[i][2]<=centerInfo[i][2]){
 						netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
 						netProfitB-=storeInfo[i][3];
-						if(netProfitB>maxProfitB){
-							maxProfitB=netProfitB;
-							storeOfMaxB=i;
-						}		
+					}	
+					else{
+						netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
+						netProfitB-=storeInfo[i][3];
 					}
+					if(netProfitB>maxProfitB){
+						maxProfitB=netProfitB;
+						storeOfMaxB=i;
+					}
+					
 				}
 			}
 		}
