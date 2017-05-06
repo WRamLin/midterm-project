@@ -6,18 +6,20 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *
 	for all centerJ
 		if centerSet[j] == 0  //centerJ is unset
 			centerSet = 1  //assume j is set
-			int profitB = netProfitOfNewStore()  //call functionB
+			int *ansB = new int[3]
+			nasB = newStore()  //call functionB
+			int profitB = ansB[0]
 			int transInfo[2] = {0}
-			int profitC = nowYouSeeMe(storeNum,j,storeSet,profitTable,storeInfo,centerInfo[j][2],transInfo[2])  //call functionC
+			int profitC = nowYouSeeMe()  //call functionC
 			int profit = max(profitB,profitC)
 			if profit > decide[0]
 				decide[0] = max(profitB,profitC) - centerInfo[j][3]  //minus fixed cost of centerJ
 				decide[1] = centerJ
 				if profit == profitB
 					//decided by functionB
-					decide[2] = numOfNewStore()
+					decide[2] = ansB[1]
 					decide[3] = 1  //build
-					decide[4] = transOfNewStore
+					decide[4] = ansB[2]
 				else
 					//decided by functionC
 					decide[2] = transInfo[1]
