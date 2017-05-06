@@ -16,7 +16,7 @@ int* newStore(int j, int storeNum, bool* storeSet, bool* centerSet, int** profit
 		if(storeSet[i]==false){
 			int tempCate = 0;
 			if(profitTable[i][j]!=0 && centerSet[j]==true){
-				if(storeInfo[i][2]<=centerInfo[i][2]){
+				if(storeInfo[i][2]<=centerInfo[j][2]){
 					netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
 					netProfitB-=storeInfo[i][3];	
 				}
