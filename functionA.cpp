@@ -14,7 +14,9 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *
 			centerSet[j] = true;  //assume it is set
 			
 			newStore( j, storeNum, storeSet, centerSet, profitTable, storeInfo, centerInfo);  //call functionB
-			int profitB = netProfitOfNewStore(j, storeNum, centerSet, profitTable, storeInfo, centerInfo );
+			int *ansB = new int[3];
+			ansB = newStore( j, storeNum, cost, storeSet, centerSet, profitTable, storeInfo, centerInfo);
+			int profitB = ansB[0];
 			int *transInfo = new int[2];  //prepare for functionC
 			for( int i = 0; i < 2; i++ ){
 				transInfo[i] = 0;
@@ -32,9 +34,9 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *
 				decide[1] = j;  //center
 				if( profit == profitB ){
 					//decided by functionB
-					decide[2] = numOfNewStore(j, storeNum, centerSet, profitTable, storeInfo, centerInfo );  //store
+					decide[2] = ansB[1];  //store
 					decide[3] = 1;  //build
-					decide[4] = transOfNewStore;  //transAm
+					decide[4] = ansB[2];  //transAm
 				}
 				else{
 					//decided by functionC
