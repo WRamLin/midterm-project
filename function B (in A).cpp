@@ -3,7 +3,11 @@ using namespace std;
 
 int* newStore(int j, int storeNum, int cost, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
 
-	int ansB[3]={0};
+	int *ansB = new int[3];
+	for( int i = 0; i < 3; i++ ){
+		ansB[i] = 0;
+	}
+	
 	int netProfitB=0;
 	int maxProfitB=-1;
 	int storeOfMaxB=-1;
