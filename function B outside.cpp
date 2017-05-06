@@ -45,5 +45,5 @@ int* newStoreOutside(int storeNum, bool* storeSet, bool* centerSet, int** profit
 		ansB[2]=storeInfo[storeOfMaxB][2];
 	ansB[3]=centerOfMaxB;
 	
-	return *ansB;
+	return ansB;
 }
