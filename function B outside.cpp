@@ -30,7 +30,7 @@ int* newStoreOutside(int storeNum, bool* storeSet, bool* centerSet, int** profit
 					if(netProfitB>maxProfitB){
 						maxProfitB=netProfitB;
 						storeOfMaxB=i;
-						centerOfMaxB=j;
+						centerOfB=j;
 						category = tempCate;
 					}
 				}
@@ -40,7 +40,7 @@ int* newStoreOutside(int storeNum, bool* storeSet, bool* centerSet, int** profit
 	ansB[0]=maxProfitB;
 	ansB[1]=storeOfMaxB;
 	if(category)
-		ansB[2] = centerInfo[centerOfMaxB][2];
+		ansB[2] = centerInfo[centerOfB][2];
 	else
 		ansB[2]=storeInfo[storeOfMaxB][2];
 	ansB[3]=centerOfMaxB;
