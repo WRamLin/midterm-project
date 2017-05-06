@@ -40,7 +40,7 @@ int* newStore(int j, int storeNum, bool* storeSet, bool* centerSet, int** profit
 	else
 		ansB[2]=storeInfo[storeOfMaxB][2];
 	
-	return *ansB;
+	return ansB;
 }
 
 
