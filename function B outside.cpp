@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-int* newStore(int j, int storeNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
+int* newStore(int storeNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
 
 	int *ansB = new int[3];
 	for( int i = 0; i < 3; i++ ){
