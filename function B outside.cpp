@@ -3,8 +3,8 @@ using namespace std;
 
 int* newStoreOutside(int storeNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
 
-	int *ansB = new int[3];
-	for( int i = 0; i < 3; i++ ){
+	int *ansB = new int[4];
+	for( int i = 0; i < 4; i++ ){
 		ansB[i] = 0;
 	}
 	
@@ -12,8 +12,9 @@ int* newStoreOutside(int storeNum, bool* storeSet, bool* centerSet, int** profit
 	int maxProfitB=-1;
 	int storeOfMaxB=-1;
 	int category = -1;
+	int centerOfB=-1;
 	for(int i=0; i<storeNum; i++){
-		for(int j=0; j<storeNum; j++){
+		for(int j=0; j<centerNum; j++){
 			if(storeSet[i]==false){
 				int tempCate = 0;
 				if(profitTable[i][j]!=0 && centerSet[j]==true){
@@ -29,6 +30,7 @@ int* newStoreOutside(int storeNum, bool* storeSet, bool* centerSet, int** profit
 					if(netProfitB>maxProfitB){
 						maxProfitB=netProfitB;
 						storeOfMaxB=i;
+						centerOfMaxB=j;
 						category = tempCate;
 					}
 				}
@@ -38,9 +40,10 @@ int* newStoreOutside(int storeNum, bool* storeSet, bool* centerSet, int** profit
 	ansB[0]=maxProfitB;
 	ansB[1]=storeOfMaxB;
 	if(category)
-		ansB[2] = centerInfo[j][2];
+		ansB[2] = centerInfo[centerOfMaxB][2];
 	else
 		ansB[2]=storeInfo[storeOfMaxB][2];
+	ansB[3]=centerOfMaxB;
 	
 	return *ansB;
 }
