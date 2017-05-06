@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 using namespace std;
 
 int posiProfit(int *storeInfo, int *centerInfo, int cost);//if profitPerGood(i,j) is positive
