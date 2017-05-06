@@ -43,7 +43,7 @@ int* newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSe
 		ansB[2] = centerInfo[centerOfB][2];
 	else
 		ansB[2]=storeInfo[storeOfMaxB][2];
-	ansB[3]=centerOfMaxB;
+	ansB[3]=centerOfB;
 	
 	return ansB;
 }
