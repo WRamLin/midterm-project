@@ -97,24 +97,35 @@ int main(){
             setTable[i][j] = 0;
     }
     
-    //main algorithm
+    //preparation
     int transInfoA[A] = {0};
-    int profitA = coffeeTeaOrMe(storeNum,centerNum,cost,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoA);
-    if (profitA != CHECK && profitA > 0)
-        set(centerSet,storeSet,setTable,storeInfo,centerInfo,transInfoA);
     int transInfoB[B] = {0};
-    int profitB = newStoreOutside(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoB);
-    if (profitB != CHECK && profitB > 0)
-        set(centerSet,storeSet,setTable,storeInfo,centerInfo,transInfoB);
     int transInfoC[C] = {0};
+    
+    //main algorithm
+    int maxProfit = 0;
+    
+    
+    int profit = maxProfit;
+    int profitA = coffeeTeaOrMe(storeNum,centerNum,cost,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoA);
+    if (profitA != CHECK && profitA > 0){
+        profit+=profitA;
+        set(centerSet,storeSet,setTable,storeInfo,centerInfo,transInfoA);
+    }
+    int profitB = newStoreOutside(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoB);
+    if (profitB != CHECK && profitB > 0){
+        profit+=profitB;
+        set(centerSet,storeSet,setTable,storeInfo,centerInfo,transInfoB);
+    }
     int profitC = catchMeIfYouCan(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoC);
-    if (profitC != CHECK && profitC > 0)
+    if (profitC != CHECK && profitC > 0){
         set(centerSet,storeSet,setTable,storeInfo,centerInfo,transInfoC);
+        profit+=profitC;
+    }
     
+    
+    //cout << "profit: " << profit << "\n";
     //if return value == CHECK, then nothing happened
-    
-    
-    
     /*
      //just for text
      cout << "profit: " << profitA << "\n";
@@ -245,6 +256,7 @@ int newStore(int j, int storeNum, bool* storeSet, int** profitTable, int** store
     int storeOfMaxB=-1;
     int category = 0;
     for(int i=0; i<storeNum; i++){
+        netProfitB = 0;
         if(storeSet[i]==false){
             if(profitTable[i][j]!=0){
                 if(storeInfo[i][2]<=centerInfo[j][2]){
@@ -282,7 +294,7 @@ int nowYouSeeMe(int storeNum, int bestJ, bool *storeSet, int **profitTable, int 
     int transStore = -1, transAm = 0, profit = CHECK, category = 0;
     for(int i = 0; i < storeNum; i++){
         int temPro = 0, type = 0;
-        if(storeSet[i] && profitTable[i][bestJ] && storeDem[i] && centerCapa){ //if the store & center are built and still have demand & capacity
+        if(storeSet[i] && profitTable[i][bestJ] && storeDem[i]>0 && centerCapa>0){ //if the store & center are built and still have demand & capacity
             if(storeDem[i] >= centerCapa){
                 temPro = profitTable[i][bestJ] * centerCapa;
                 type = 0;//if demand >= capacity, to know which amount is used
@@ -323,6 +335,7 @@ int newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSet
     int category = 0;
     int centerOfB=-1;
     for(int i=0; i<storeNum; i++){
+        netProfitB = 0;
         for(int j=0; j<centerNum; j++){
             if(storeSet[i]==false){
                 if(profitTable[i][j]!=0 && centerSet[j]==true){
@@ -374,7 +387,7 @@ int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet
         if(storeSet[i]){
             for(int j = 0; j < centerNum; j++){
                 int temPro = 0, type = 0;
-                if(centerSet[j] && profitTable[i][j] && storeDem[i] && centerCapa[j]){ //if the store & center are built and still have demand & capacity
+                if(centerSet[j] && profitTable[i][j] && storeDem[i]>0 && centerCapa[j]>0){ //if the store & center are built and still have demand & capacity
                     if(storeDem[i] >= centerCapa[j]){
                         temPro = profitTable[i][j] * centerCapa[j];
                         type = 0;//if demand >= capacity, to know which amount is used
