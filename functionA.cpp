@@ -39,7 +39,6 @@ int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *
 					decide[4] = transInfo[0];  //transAm
 				}
 			}
-			delete [] transInfo;
 			delete [] ansB;
 			centerSet[j] = false;  //delete assumption
 		}
