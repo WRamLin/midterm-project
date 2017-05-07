@@ -1,9 +1,9 @@
 #include<iostream>
 using namespace std;
 
-int transInfo[3] = {0};
+int transInfoC[3] = {0};
 
-int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfo[3]){
+int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfoC[3]){
 	int *storeDem = new int[storeNum];
 	for(int i = 0; i < storeNum; i++){
 		storeDem[i] = storeInfo[i][2];
@@ -46,9 +46,9 @@ int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet
 	}
 	
 	if(profit > 0){
-		transInfo[0] = transAm;
-		transInfo[1] = transStore;
-		transInfo[2] = transCenter;
+		transInfoC[0] = transAm;
+		transInfoC[1] = transStore;
+		transInfoC[2] = transCenter;
 	}
 	
 	delete[]storeDem;
