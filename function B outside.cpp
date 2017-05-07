@@ -1,12 +1,7 @@
 #include <iostream>
 using namespace std;
-
-int* newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
-
-	int *ansB = new int[4];
-	for( int i = 0; i < 4; i++ ){
-		ansB[i] = 0;
-	}
+int transInfoB[3] = {0};
+int newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo, int transInfoB[3]){
 	
 	int netProfitB=0;
 	int maxProfitB=--2147483648;
@@ -37,13 +32,12 @@ int* newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSe
 			}
 		}	
 	}
-	ansB[0]=maxProfitB;
-	ansB[1]=storeOfMaxB;
+	ansB[0]=storeOfMaxB;
 	if(category)
 		ansB[2] = centerInfo[centerOfB][2];
 	else
 		ansB[2]=storeInfo[storeOfMaxB][2];
-	ansB[3]=centerOfB;
+	ansB[1]=centerOfB;
 	
-	return ansB;
+	return maxProfitB;
 }
