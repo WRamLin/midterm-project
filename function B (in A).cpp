@@ -1,13 +1,8 @@
 #include <iostream>
 using namespace std;
 
-int* newStore(int j, int storeNum, bool* storeSet, int** profitTable, int** storeInfo, int** centerInfo){
-
-	int *ansB = new int[3];
-	for( int i = 0; i < 3; i++ ){
-		ansB[i] = 0;
-	}
-	
+int transInfoB[2] = {0};
+int newStore(int j, int storeNum, bool* storeSet, int** profitTable, int** storeInfo, int** centerInfo, int transInfoB[2]){	
 	int netProfitB=0;
 	int maxProfitB=-2147483648;
 	int storeOfMaxB=-1;
@@ -33,14 +28,12 @@ int* newStore(int j, int storeNum, bool* storeSet, int** profitTable, int** stor
 			}
 		}
 	}
-	ansB[0]=maxProfitB;
-	ansB[1]=storeOfMaxB;
+	ansB[0]=storeOfMaxB;
 	if(category)
-		ansB[2] = centerInfo[j][2];
+		ansB[1] = centerInfo[j][2];
 	else
-		ansB[2]=storeInfo[storeOfMaxB][2];
-	
-	return ansB;
+		ansB[1]=storeInfo[storeOfMaxB][2];
+	return maxProfitB;
 }
 
 
