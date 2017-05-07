@@ -86,7 +86,7 @@ int main(){
     //main algorithim
     //functionA
     int *decide = coffeeTeaOrMe(storeNum,centerNum,cost,storeSet,centerSet,profitTable,storeInfo,centerInfo);
-    int profitA = decide[0];
+    int profitA = decide[0];  //maxNetProfit , center , store , build(1)/trans(0) , transAm
     centerSet[decide[1]] = 1;
     storeSet[decide[2]] = 1;
     setTable[decide[2]][decide[1]] += decide[4];
@@ -95,7 +95,7 @@ int main(){
     
     //functionB
     int *ansB =  newStoreOutside(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo);
-    int profitB = ansB[0];
+    int profitB = ansB[0];  //profit, store, transAm, center
     if (profitB > 0){
       storeSet[ansB[1]] = 1;
       setTable[ansB[1]][ansB[3]] += ansB[2];
@@ -105,7 +105,7 @@ int main(){
 
     while (true){
       //functionC
-      int transInfo[3] = {0};
+      int transInfo[3] = {0};  //transAm, store, center
       int profitC = catchMeIfYouCan(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfo);
       if (profitC > 0){
 	setTable[transInfo[1]][transInfo[2]] += transInfo[0];
