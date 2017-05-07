@@ -16,6 +16,7 @@ const int C = 3;
 int posiProfit(int *storeInfo, int *centerInfo, int cost);//if profitPerGood(i,j) is positive
 int distance(int *storePosit, int *centerPosit);
 int numOfSet(int num, bool *setList);
+void set(bool *centerSet, bool *storeSet, int **setTable, int **storeInfo, int **centerInfo, int transInfo[]);
 
 //functionA
 int coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfoA[A]);
@@ -96,41 +97,31 @@ int main(){
             setTable[i][j] = 0;
     }
     
-    /*calculate function start
-     functionA: check a most valuable netProfit center & an associated stores
-     return netProftit & the indexOfCenter & the indexOfStores & type & transAm
-     
-     functionB: check a most valuable unset store set
-     return netProfit & indexOfCenter & the indexOfStores & transAm
-     
-     functionC: check a most valuable transition
-     return netProfit & indexOfCenter & the indexOfStores & transAm
-     */
-    
-    //do functionA once
-    //comparation between netProfit of functionA, functionB & functionC
-    //satisfied the need, increase capacity or demand if satisfied, record the set of store or center if needed
-    //do while the additProfit is minus
-    
+    //main algorithm
     int transInfoA[A] = {0};
     int profitA = coffeeTeaOrMe(storeNum,centerNum,cost,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoA);
+    if (profitA != CHECK && profitA > 0)
+        set(centerSet,storeSet,setTable,storeInfo,centerInfo,transInfoA);
     int transInfoB[B] = {0};
     int profitB = newStoreOutside(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoB);
+    if (profitB != CHECK && profitB > 0)
+        set(centerSet,storeSet,setTable,storeInfo,centerInfo,transInfoB);
     int transInfoC[C] = {0};
     int profitC = catchMeIfYouCan(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoC);
-    
-    
+    if (profitC != CHECK && profitC > 0)
+        set(centerSet,storeSet,setTable,storeInfo,centerInfo,transInfoC);
     
     //if return value == CHECK, then nothing happened
-    centerSet[transInfoA[0]] = 1;
-    storeSet[transInfoA[1]] = 1;
-    setTable[transInfoA[1]][transInfoA[0]] += transInfoA[2];
     
-    //just for text
-    cout << "profit: " << profitA << "\n";
-    for (int i = 0; i < A; i++)
-        cout << transInfoA[i] << " ";
-    cout << "\n";
+    
+    
+    /*
+     //just for text
+     cout << "profit: " << profitA << "\n";
+     for (int i = 0; i < A; i++)
+     cout << transInfoA[i] << " ";
+     cout << "\n";
+     */
     
     //cout section
     int centerSetNum = numOfSet(centerNum,centerSet);
@@ -200,6 +191,15 @@ int numOfSet(int num, bool *setList){
     return setNum;
 }
 
+void set(bool *centerSet, bool *storeSet, int **setTable, int **storeInfo, int **centerInfo, int transInfo[]){
+    centerSet[transInfo[0]] = 1;
+    storeSet[transInfo[1]] = 1;
+    storeInfo[transInfo[1]][2] -= transInfo[2];
+    centerInfo[transInfo[0]][2] -= transInfo[2];
+    setTable[transInfo[1]][transInfo[0]] += transInfo[2];
+}
+
+//functionA
 int coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfoA[4]){
     int maxProfit = CHECK;
     for( int j = 0; j < centerNum; j++ ){
@@ -342,15 +342,18 @@ int newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSet
                     }
                 }
             }
-        }	
+        }
     }
     
-    transInfoB[0]=centerOfB;
-    transInfoB[1]=storeOfB;
-    if(category)
-        ansB[2] = centerInfo[centerOfB][2];
-    else
-        ansB[2]=storeInfo[storeOfMaxB][2];
+    
+    if (maxProfitB != CHECK){
+        transInfoB[0]=centerOfB;
+        transInfoB[1]=storeOfB;
+        if(category)
+            transInfoB[2] = centerInfo[centerOfB][2];
+        else
+            transInfoB[2]=storeInfo[storeOfB][2];
+    }
     
     return maxProfitB;
 }
@@ -401,11 +404,10 @@ int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet
     if(profit > 0){
         transInfoC[0] = transCenter;
         transInfoC[1] = transStore;
-        transInfoC[2] = transStore;
+        transInfoC[2] = transAm;
     }
     
     delete[]storeDem;
     delete[]centerCapa;
     return profit;
 }
-
