@@ -3,17 +3,30 @@
 #include <algorithm>
 using namespace std;
 
+const int CHECK = -2147483648;
+const int storeCol = 5; //first two for x, y, third for demand, forth for fixed cost, fifth for price
+const int centerCol = 4; //first two for x, y, third for capacity, forth for fixed cost
+const int A = 4;
+const int BinA = 2;
+const int CinA = 2;
+const int B = 3;
+const int C = 3;
+
+//basic function
 int posiProfit(int *storeInfo, int *centerInfo, int cost);//if profitPerGood(i,j) is positive
 int distance(int *storePosit, int *centerPosit);
 int numOfSet(int num, bool *setList);
-int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfo[]);//return profit
-int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo);//return decide
-int *newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo);
-int nowYouSeeMe(int storeNum, int bestJ, bool *storeSet, int **profitTable, int **storeInfo, int centerCapa, int transInfo[2]);
-int *newStore(int j, int storeNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo);
 
-const int storeCol = 5; //first two for x, y, third for demand, forth for fixed cost, fifth for price
-const int centerCol = 4; //first two for x, y, third for capacity, forth for fixed cost
+//functionA
+int coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfoA[A]);
+//for functionA
+int newStore(int j, int storeNum, bool* storeSet, int** profitTable, int** storeInfo, int** centerInfo, int transInfoB[BinA]);
+int nowYouSeeMe(int storeNum, int bestJ, bool *storeSet, int **profitTable, int **storeInfo, int centerCapa, int transInfoC[CinA]);
+//functonB
+int newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo, int transInfoB[B]);
+//functionC
+int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfoC[C]);
+
 int main(){
     //initialization part
     int centerNum = 0;
@@ -82,39 +95,42 @@ int main(){
         for (int j = 0; j < centerNum; j++)
             setTable[i][j] = 0;
     }
-
-    //main algorithim
-    //functionA
-    int *decide = coffeeTeaOrMe(storeNum,centerNum,cost,storeSet,centerSet,profitTable,storeInfo,centerInfo);
-    int profitA = decide[0];  //maxNetProfit , center , store , build(1)/trans(0) , transAm
-    centerSet[decide[1]] = 1;
-    storeSet[decide[2]] = 1;
-    setTable[decide[2]][decide[1]] += decide[4];
-    storeInfo[decide[2]][2] -= decide[4];
-    centerInfo[decide[1]][2] -= decide[4];
     
-    //functionB
-    int *ansB =  newStoreOutside(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo);
-    int profitB = ansB[0];  //profit, store, transAm, center
-    if (profitB > 0){
-      storeSet[ansB[1]] = 1;
-      setTable[ansB[1]][ansB[3]] += ansB[2];
-      storeInfo[ansB[1]][2] -= ansB[2];
-      centerInfo[ansB[3]][2] -= ansB[2];
-    }
-
-    while (true){
-      //functionC
-      int transInfo[3] = {0};  //transAm, store, center
-      int profitC = catchMeIfYouCan(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfo);
-      if (profitC > 0){
-	setTable[transInfo[1]][transInfo[2]] += transInfo[0];
-	storeInfo[transInfo[1]][2] -= transInfo[0];
-	centerInfo[transInfo[2]][2] -= transInfo[0];
-      }
-      else
-	break;
-    }
+    /*calculate function start
+     functionA: check a most valuable netProfit center & an associated stores
+     return netProftit & the indexOfCenter & the indexOfStores & type & transAm
+     
+     functionB: check a most valuable unset store set
+     return netProfit & indexOfCenter & the indexOfStores & transAm
+     
+     functionC: check a most valuable transition
+     return netProfit & indexOfCenter & the indexOfStores & transAm
+     */
+    
+    //do functionA once
+    //comparation between netProfit of functionA, functionB & functionC
+    //satisfied the need, increase capacity or demand if satisfied, record the set of store or center if needed
+    //do while the additProfit is minus
+    
+    int transInfoA[A] = {0};
+    int profitA = coffeeTeaOrMe(storeNum,centerNum,cost,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoA);
+    int transInfoB[B] = {0};
+    int profitB = newStoreOutside(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoB);
+    int transInfoC[C] = {0};
+    int profitC = catchMeIfYouCan(storeNum,centerNum,storeSet,centerSet,profitTable,storeInfo,centerInfo,transInfoC);
+    
+    
+    
+    //if return value == CHECK, then nothing happened
+    centerSet[transInfoA[0]] = 1;
+    storeSet[transInfoA[1]] = 1;
+    setTable[transInfoA[1]][transInfoA[0]] += transInfoA[2];
+    
+    //just for text
+    cout << "profit: " << profitA << "\n";
+    for (int i = 0; i < A; i++)
+        cout << transInfoA[i] << " ";
+    cout << "\n";
     
     //cout section
     int centerSetNum = numOfSet(centerNum,centerSet);
@@ -127,9 +143,8 @@ int main(){
     cout << "\n";//new line
     cout << storeSetNum;
     for (int i = 0; i < storeNum; i++){
-        if (storeSet[i]){
+        if (storeSet[i])
             cout << " " << i+1;
-        }
     }
     cout << "\n";//new line
     for (int i = 0; i < storeNum; i++){
@@ -185,7 +200,163 @@ int numOfSet(int num, bool *setList){
     return setNum;
 }
 
-int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfo[3]){
+int coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfoA[4]){
+    int maxProfit = CHECK;
+    for( int j = 0; j < centerNum; j++ ){
+        if( centerSet[j] == false ){
+            //check if centerJ didn't bulit yet
+            int transInfoB[BinA] = {0}; //prepare for functionB
+            int profitB = newStore( j, storeNum, storeSet, profitTable, storeInfo, centerInfo, transInfoB); //call functionB
+            int transInfoC[CinA] = {0};  //prepare for functionC
+            int profitC = nowYouSeeMe(storeNum,j,storeSet,profitTable,storeInfo,centerInfo[j][2],transInfoC);  //call functionC
+            int profit = profitB;
+            bool isB = 1;
+            if( profitB < profitC ){
+                profit = profitC;
+                isB = 0;
+            }
+            profit -= centerInfo[j][3];
+            
+            if( profit > maxProfit ){
+                maxProfit = profit;  //maxNetProfit
+                transInfoA[0] = j;  //center
+                if(isB){
+                    //decided by functionB
+                    transInfoA[1] = transInfoB[0];  //store
+                    transInfoA[2] = transInfoB[1];  //transAm
+                    transInfoA[3] = 1;  //build
+                }
+                else{
+                    //decided by functionC
+                    transInfoA[1] = transInfoC[0];  //store
+                    transInfoA[2] = transInfoC[1];  //transAm
+                    transInfoA[3] = 0 ;//allocate
+                }
+            }
+        }
+    }
+    return maxProfit;
+}
+
+//for functionA
+int newStore(int j, int storeNum, bool* storeSet, int** profitTable, int** storeInfo, int** centerInfo, int transInfoB[2]){
+    int netProfitB=0;
+    int maxProfitB=CHECK;
+    int storeOfMaxB=-1;
+    int category = 0;
+    for(int i=0; i<storeNum; i++){
+        if(storeSet[i]==false){
+            if(profitTable[i][j]!=0){
+                if(storeInfo[i][2]<=centerInfo[j][2]){
+                    netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
+                    netProfitB-=storeInfo[i][3];
+                }
+                else{
+                    netProfitB+=(profitTable[i][j]*centerInfo[j][2]);
+                    netProfitB-=storeInfo[i][3];
+                    category = 1;
+                }
+                if(netProfitB>maxProfitB){
+                    maxProfitB=netProfitB;
+                    storeOfMaxB=i;
+                }
+            }
+        }
+    }
+    if (storeOfMaxB != -1){
+        transInfoB[0]=storeOfMaxB;
+        if(category)
+            transInfoB[1] = centerInfo[j][2];
+        else
+            transInfoB[1]=storeInfo[storeOfMaxB][2];
+    }
+    return maxProfitB;
+}
+
+int nowYouSeeMe(int storeNum, int bestJ, bool *storeSet, int **profitTable, int **storeInfo, int centerCapa, int transInfoC[2]){
+    int *storeDem = new int[storeNum];
+    for(int i = 0; i < storeNum; i++){
+        storeDem[i] = storeInfo[i][2];
+    }
+    
+    int transStore = -1, transAm = 0, profit = CHECK, category = 0;
+    for(int i = 0; i < storeNum; i++){
+        int temPro = 0, type = 0;
+        if(storeSet[i] && profitTable[i][bestJ] && storeDem[i] && centerCapa){ //if the store & center are built and still have demand & capacity
+            if(storeDem[i] >= centerCapa){
+                temPro = profitTable[i][bestJ] * centerCapa;
+                type = 0;//if demand >= capacity, to know which amount is used
+            }
+            else{
+                temPro = profitTable[i][bestJ] * storeDem[i];
+                type = 1;
+            }
+            if(temPro > profit){
+                profit = temPro;
+                transStore = i;
+                category = type;
+                if(category){
+                    transAm = storeDem[transStore];
+                }
+                else{
+                    transAm = centerCapa;
+                }
+            }
+        }
+    }
+    
+    if(profit > 0){
+        transInfoC[0] = transStore;
+        transInfoC[1] = transAm;
+    }
+    
+    delete[]storeDem;
+    return profit;
+}
+
+//functionB
+int newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo, int transInfoB[3]){
+    
+    int netProfitB=0;
+    int maxProfitB=CHECK;
+    int storeOfB=-1;
+    int category = 0;
+    int centerOfB=-1;
+    for(int i=0; i<storeNum; i++){
+        for(int j=0; j<centerNum; j++){
+            if(storeSet[i]==false){
+                if(profitTable[i][j]!=0 && centerSet[j]==true){
+                    if(storeInfo[i][2]<=centerInfo[j][2]){
+                        netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
+                        netProfitB-=storeInfo[i][3];
+                    }
+                    else{
+                        netProfitB+=(profitTable[i][j]*centerInfo[j][2]);
+                        netProfitB-=storeInfo[i][3];
+                        category = 1;
+                    }
+                    if(netProfitB>maxProfitB){
+                        maxProfitB=netProfitB;
+                        storeOfB=i;
+                        centerOfB=j;
+                    }
+                }
+            }
+        }	
+    }
+    
+    transInfoB[0]=centerOfB;
+    transInfoB[1]=storeOfB;
+    if(category)
+        ansB[2] = centerInfo[centerOfB][2];
+    else
+        ansB[2]=storeInfo[storeOfMaxB][2];
+    
+    return maxProfitB;
+}
+
+//functionC
+int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo, int transInfoC[3]){
     int *storeDem = new int[storeNum];
     for(int i = 0; i < storeNum; i++){
         storeDem[i] = storeInfo[i][2];
@@ -195,7 +366,7 @@ int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet
     for(int i = 0; i < centerNum; i++){
         centerCapa[i] = centerInfo[i][2];
     }
-    int transStore = -1, transCenter = -1, transAm = 0, profit = 0, category = 0;
+    int transStore = -1, transCenter = -1, transAm = 0, profit = CHECK, category = 0;
     for(int i = 0; i < storeNum; i++){
         if(storeSet[i]){
             for(int j = 0; j < centerNum; j++){
@@ -228,9 +399,9 @@ int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet
     }
     
     if(profit > 0){
-        transInfo[0] = transAm;
-        transInfo[1] = transStore;
-        transInfo[2] = transCenter;
+        transInfoC[0] = transCenter;
+        transInfoC[1] = transStore;
+        transInfoC[2] = transStore;
     }
     
     delete[]storeDem;
@@ -238,177 +409,3 @@ int catchMeIfYouCan(int storeNum, int centerNum, bool *storeSet, bool *centerSet
     return profit;
 }
 
-int *coffeeTeaOrMe(int storeNum, int centerNum, int cost, bool *storeSet, bool *centerSet, int **profitTable, int **storeInfo, int **centerInfo){
-	int *decide = new int[5]; //maxNetProfit , center , store , build(1)/trans(0) , transAm
-	//initialize
-	for( int i = 0; i < 5; i++ ){
-		decide[i] = 0;
-	}
-	
-	for( int j = 0; j < centerNum; j++ ){
-		if( centerSet[j] == false ){
-			centerSet[j] = true;  //assume it is set
-			
-			int *ansB = newStore( j, storeNum, storeSet, profitTable, storeInfo, centerInfo);  //call functionB
-			int profitB = ansB[0];
-			int transInfo[3] = {0};  //prepare for functionC
-			int profitC = nowYouSeeMe(storeNum,j,storeSet,profitTable,storeInfo,centerInfo[j][2],transInfo);  //call functionC
-			int profit = 0;
-			if( profitB == profitC )
-				profit = profitB;
-			else
-				profit = max( profitB, profitC );
-			profit -= centerInfo[j][3];
-			if( profit > decide[0] ){
-				decide[0] = profit;  //maxNetProfit
-				decide[1] = j;  //center
-				if( profit == profitB ){
-					//decided by functionB
-					decide[2] = ansB[1];  //store
-					decide[3] = 1;  //build
-					decide[4] = ansB[2];  //transAm
-				}
-				else{
-					//decided by functionC
-					decide[2] = transInfo[1];  //store
-					decide[3] = 0;  //trans
-					decide[4] = transInfo[0];  //transAm
-				}
-			}
-			delete [] ansB;
-			centerSet[j] = false;  //delete assumption
-		}
-	}
-
-	return decide;
-}
-int* newStore(int j, int storeNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
-    
-    int *ansB = new int[3];
-    for( int i = 0; i < 3; i++ ){
-        ansB[i] = 0;
-    }
-    
-    int netProfitB=0;
-    int maxProfitB=-1;
-    int storeOfMaxB=-1;
-    int category = -1;
-    for(int i=0; i<storeNum; i++){
-        if(storeSet[i]==false){
-            int tempCate = 0;
-            if(profitTable[i][j]!=0 && centerSet[j]==true){
-                if(storeInfo[i][2]<=centerInfo[j][2]){
-                    netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
-                    netProfitB-=storeInfo[i][3];
-                }
-                else{
-                    netProfitB+=(profitTable[i][j]*centerInfo[j][2]);
-                    netProfitB-=storeInfo[i][3];
-                    tempCate = 1;
-                }
-                if(netProfitB>maxProfitB){
-                    maxProfitB=netProfitB;
-                    storeOfMaxB=i;
-                    category = tempCate;
-                }
-            }
-        }
-    }
-    ansB[0]=maxProfitB;
-    ansB[1]=storeOfMaxB;
-    if(category)
-        ansB[2] = centerInfo[j][2];
-    else
-        ansB[2]=storeInfo[storeOfMaxB][2];
-    
-    return ansB;
-}
-
-int nowYouSeeMe(int storeNum, int bestJ, bool *storeSet, int **profitTable, int **storeInfo, int centerCapa, int transInfo[3]){
-    int *storeDem = new int[storeNum];
-    for(int i = 0; i < storeNum; i++){
-        storeDem[i] = storeInfo[i][2];
-    }
-    
-    int transStore = -1, transAm = 0, profit = 0, category = 0;
-    for(int i = 0; i < storeNum; i++){
-        int temPro = 0, type = 0;
-        if(storeSet[i] && profitTable[i][bestJ] && storeDem[i] && centerCapa){
-	  //if the store & center are built and still have demand & capacity
-            if(storeDem[i] >= centerCapa){
-                temPro = profitTable[i][bestJ] * centerCapa;
-                type = 0;//if demand >= capacity, to know which amount is used
-            }
-            else{
-                temPro = profitTable[i][bestJ] * storeDem[i];
-                type = 1;
-            }
-            if(temPro > profit){
-                profit = temPro;
-                transStore = i;
-                category = type;
-                if(category){
-                    transAm = storeDem[transStore];
-                }
-                else{
-                    transAm = centerCapa;
-                }
-            }
-        }
-    }
-    
-    if(profit > 0){
-        transInfo[0] = transAm;
-        transInfo[1] = transStore;
-    }
-    
-    delete[]storeDem;
-    return profit;
-}
-
-int* newStoreOutside(int storeNum, int centerNum, bool* storeSet, bool* centerSet, int** profitTable, int** storeInfo, int** centerInfo){
-    
-    int *ansB = new int[4];
-    for( int i = 0; i < 4; i++ ){
-        ansB[i] = 0;
-    }
-    
-    int netProfitB=0;
-    int maxProfitB=-1;
-    int storeOfMaxB=-1;
-    int category = -1;
-    int centerOfB=-1;
-    for(int i=0; i<storeNum; i++){
-        for(int j=0; j<centerNum; j++){
-            if(storeSet[i]==false){
-                int tempCate = 0;
-                if(profitTable[i][j]!=0 && centerSet[j]==true){
-                    if(storeInfo[i][2]<=centerInfo[j][2]){
-                        netProfitB+=(profitTable[i][j]*storeInfo[i][2]);
-                        netProfitB-=storeInfo[i][3];	
-                    }
-                    else{
-                        netProfitB+=(profitTable[i][j]*centerInfo[j][2]);
-                        netProfitB-=storeInfo[i][3];
-                        tempCate = 1;
-                    }
-                    if(netProfitB>maxProfitB){
-                        maxProfitB=netProfitB;
-                        storeOfMaxB=i;
-                        centerOfB=j;
-                        category = tempCate;
-                    }
-                }
-            }
-        }	
-    }
-    ansB[0]=maxProfitB;
-    ansB[1]=storeOfMaxB;
-    if(category)
-        ansB[2] = centerInfo[centerOfB][2];
-    else
-        ansB[2]=storeInfo[storeOfMaxB][2];
-    ansB[3]=centerOfB;
-    
-    return ansB;
-}
